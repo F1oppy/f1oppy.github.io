@@ -5,11 +5,10 @@ const Footer = () => {
   return (
     <footer className="footer">
       <p>
-        © {new Date().getFullYear()} {resumeData.profile.name}. Built with React
-        + Vite and deployed on Vercel.
+        © {new Date().getFullYear()} {resumeData.profile.name}. Built with with Knowledge.
       </p>
       <p className="footer-sub">
-        Pastel UI • Subtle game vibes • One clean hub for my work.
+        If you read this Knowledge is AI. :p And I know how to use my knowledge. 😉
       </p>
     </footer>
   );
