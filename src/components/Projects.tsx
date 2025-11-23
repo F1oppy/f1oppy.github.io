@@ -27,12 +27,12 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           </p>
           <p className="project-desc">{p.description}</p>
           <div className="tag-row">
-            {p.tech.map((t: string) => (
-              <span key={t} className="tag">
-                {t}
-              </span>
-            ))}
-          </div>
+          {p.tech.map((t: string) => (
+            <span key={t} className="tag">
+              {t}
+            </span>
+          ))}
+        </div>
         </article>
       ))}
     </div>
