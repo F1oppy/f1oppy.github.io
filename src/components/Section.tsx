@@ -1,5 +1,12 @@
-// src/components/Section.jsx
-const Section = ({ id, title, children }) => {
+import React, { ReactNode } from "react";
+
+type SectionProps = {
+  id: string;
+  title: string;
+  children: ReactNode;
+};
+
+const Section: React.FC<SectionProps> = ({ id, title, children }) => {
   return (
     <section id={id} className="section">
       <div className="section-header">

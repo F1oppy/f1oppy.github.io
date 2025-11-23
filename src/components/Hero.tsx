@@ -1,7 +1,10 @@
-// src/components/Hero.jsx
-import resumeData from "../data/resumeData";
+import React from "react";
 
-const Hero = ({ profile }) => {
+type HeroProps = {
+  profile: any; // you can tighten this later if you want
+};
+
+const Hero: React.FC<HeroProps> = ({ profile }) => {
   return (
     <section id="top" className="hero">
       <div className="hero-content glass-card">
@@ -17,10 +20,7 @@ const Hero = ({ profile }) => {
           </div>
 
           <div className="hero-actions">
-            <a
-              href="#contact"
-              className="btn primary-btn"
-            >
+            <a href="#contact" className="btn primary-btn">
               Let’s Connect
             </a>
             <a

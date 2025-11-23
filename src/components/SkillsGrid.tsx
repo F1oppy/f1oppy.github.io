@@ -1,19 +1,30 @@
-// src/components/SkillsGrid.jsx
-import { useState } from "react";
+import React, { useState } from "react";
 
-const levelLabel = (n) => {
+type SkillItem = {
+  category: string;
+  level: number; // 1–5
+  items: string[];
+};
+
+type SkillsGridProps = {
+  skills: SkillItem[];
+};
+
+const levelLabel = (n: number): string => {
   if (n <= 2) return "Intermediate";
   if (n === 3) return "Advanced";
   if (n === 4) return "Expert";
   return "Lead / SME";
 };
 
-const SkillsGrid = ({ skills }) => {
-  const [activeFilter, setActiveFilter] = useState("All");
+type FilterType = "All" | "Tech" | "Leadership";
 
-  const categories = ["All", "Tech", "Leadership"];
+const SkillsGrid: React.FC<SkillsGridProps> = ({ skills }) => {
+  const [activeFilter, setActiveFilter] = useState<FilterType>("All");
 
-  const filteredSkills = skills.filter((s) => {
+  const categories: FilterType[] = ["All", "Tech", "Leadership"];
+
+  const filteredSkills = skills.filter((s: SkillItem) => {
     if (activeFilter === "All") return true;
     if (activeFilter === "Tech") return s.level <= 4;
     if (activeFilter === "Leadership") return s.level >= 5;
@@ -23,7 +34,7 @@ const SkillsGrid = ({ skills }) => {
   return (
     <div>
       <div className="pill-switch">
-        {categories.map((c) => (
+        {categories.map((c: FilterType) => (
           <button
             key={c}
             className={`pill ${activeFilter === c ? "pill-active" : ""}`}
@@ -35,7 +46,7 @@ const SkillsGrid = ({ skills }) => {
       </div>
 
       <div className="skills-grid">
-        {filteredSkills.map((skill) => (
+        {filteredSkills.map((skill: SkillItem) => (
           <div key={skill.category} className="skill-card glass-card">
             <div className="skill-header">
               <h3>{skill.category}</h3>
@@ -48,7 +59,7 @@ const SkillsGrid = ({ skills }) => {
               />
             </div>
             <ul className="skill-items">
-              {skill.items.map((item) => (
+              {skill.items.map((item: string) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
