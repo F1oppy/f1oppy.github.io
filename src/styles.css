@@ -1,25 +1,45 @@
-/* src/styles.css */
-
 /* ---------- Base + theme ---------- */
 :root {
-  --bg: #0f172a;
-  --bg-alt: #111827;
-  --card-bg: rgba(15, 23, 42, 0.75);
-  --card-border: rgba(148, 163, 184, 0.3);
+  /* Light pastel theme as default */
+  --bg: #f9fafb;
+  --bg-alt: #e5f0ff;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(148, 163, 184, 0.6);
 
   --accent: #a5b4fc; /* pastel indigo */
-  --accent-soft: #e0e7ff;
+  --accent-soft: #4b5563;
   --accent2: #f9a8d4; /* pastel pink */
-  --accent3: #6ee7b7; /* mint */
-  --text: #e5e7eb;
-  --text-muted: #9ca3af;
+  --accent3: #6ee7b7; /* mint green */
+  --accent4: #fde68a; /* soft yellow */
+
+  --text: #111827;
+  --text-muted: #6b7280;
 
   --radius-lg: 18px;
   --radius-md: 12px;
   --radius-pill: 999px;
 
-  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.75);
+  --shadow-soft: 0 18px 40px rgba(148, 163, 184, 0.35);
   --blur: 18px;
+}
+
+/* Optional dark theme (if you keep the toggle) */
+:root[data-theme="dark"] {
+  --bg: #020617;            /* almost-black navy */
+  --bg-alt: #020617;
+  --card-bg: rgba(15, 23, 42, 0.96);
+  --card-border: rgba(51, 65, 85, 0.9);
+
+  --accent: #818cf8;        /* indigo */
+  --accent-soft: #e5e7eb;
+  --accent2: #f472b6;       /* pink */
+  --accent3: #22c55e;       /* green */
+  --accent4: #facc15;       /* yellow */
+
+  --text: #e5e7eb;
+  --text-muted: #9ca3af;
+
+  --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.9);
 }
 
 *,
@@ -28,6 +48,7 @@
   box-sizing: border-box;
 }
 
+/* Subtle pastel gradient background + floating dots */
 html,
 body,
 #root {
@@ -36,13 +57,27 @@ body,
   height: 100%;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, var(--bg-alt), var(--bg));
+  background:
+    radial-gradient(circle at 0% 0%, #fee2e2 0, transparent 55%),
+    radial-gradient(circle at 100% 0%, #e0f2fe 0, transparent 55%),
+    radial-gradient(circle at 0% 100%, #fef3c7 0, transparent 55%),
+    radial-gradient(circle at 100% 100%, #e0f2fe 0, transparent 55%),
+    linear-gradient(180deg, var(--bg), var(--bg-alt));
   color: var(--text);
+  overflow-x: hidden;
 }
 
-body {
-  -webkit-font-smoothing: antialiased;
+/* Proper dark background when theme = dark */
+[data-theme="dark"] body,
+[data-theme="dark"] #root {
+  background:
+    radial-gradient(circle at 0% 0%, #020617 0, transparent 55%),
+    radial-gradient(circle at 100% 0%, #020617 0, transparent 55%),
+    radial-gradient(circle at 0% 100%, #020617 0, transparent 55%),
+    radial-gradient(circle at 100% 100%, #020617 0, transparent 55%),
+    linear-gradient(180deg, #020617, #020617);
 }
+
 
 /* ---------- Layout ---------- */
 
@@ -51,6 +86,46 @@ body {
   max-width: 1120px;
   margin: 0 auto;
   padding: 88px 16px 32px;
+  position: relative;
+}
+
+/* floating pastel orbs in background */
+.app::before,
+.app::after {
+  content: "";
+  position: fixed;
+  border-radius: 999px;
+  filter: blur(60px);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.app::before {
+  width: 280px;
+  height: 280px;
+  background: rgba(196, 181, 253, 0.6);
+  top: -40px;
+  left: -60px;
+  animation: floatOrb 16s ease-in-out infinite alternate;
+}
+
+.app::after {
+  width: 260px;
+  height: 260px;
+  background: rgba(252, 165, 165, 0.6);
+  bottom: -40px;
+  right: -40px;
+  animation: floatOrb 18s ease-in-out infinite alternate;
+}
+
+@keyframes floatOrb {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(20px, -30px, 0);
+  }
 }
 
 main {
@@ -59,6 +134,38 @@ main {
 
 .section {
   margin-bottom: 64px;
+  animation: fadeInUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+.section:nth-of-type(1) {
+  animation-delay: 0.1s;
+}
+.section:nth-of-type(2) {
+  animation-delay: 0.18s;
+}
+.section:nth-of-type(3) {
+  animation-delay: 0.26s;
+}
+.section:nth-of-type(4) {
+  animation-delay: 0.34s;
+}
+.section:nth-of-type(5) {
+  animation-delay: 0.42s;
+}
+.section:nth-of-type(6) {
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .section-header {
@@ -84,24 +191,31 @@ main {
 .glass-card {
   background: linear-gradient(
       135deg,
-      rgba(148, 163, 184, 0.16),
-      rgba(15, 23, 42, 0.8)
+      rgba(255, 255, 255, 0.9),
+      rgba(248, 250, 252, 0.9)
     );
   border-radius: var(--radius-lg);
   border: 1px solid var(--card-border);
   padding: 20px 22px;
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(var(--blur));
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.15s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 48px rgba(148, 163, 184, 0.45);
+  border-color: rgba(129, 140, 248, 0.7);
 }
 
 .mini-glass {
   background: linear-gradient(
     135deg,
-    rgba(148, 163, 184, 0.15),
-    rgba(15, 23, 42, 0.8)
+    rgba(255, 255, 255, 0.95),
+    rgba(239, 246, 255, 0.9)
   );
   border-radius: var(--radius-md);
-  border: 1px solid rgba(148, 163, 184, 0.25);
+  border: 1px solid rgba(148, 163, 184, 0.4);
   padding: 16px 18px;
 }
 
@@ -115,6 +229,11 @@ main {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(239, 246, 255, 0.95)
+  );
 }
 
 .nav-left {
@@ -133,6 +252,7 @@ main {
   justify-content: center;
   font-weight: 700;
   font-size: 0.9rem;
+  color: #0f172a;
 }
 
 .nav-name {
@@ -147,69 +267,28 @@ main {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
-/* Slight hover "card lift" for gaming card */
-.gaming-card {
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-}
-
-.gaming-card::before {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background: radial-gradient(
-    circle at top left,
-    rgba(129, 140, 248, 0.25),
-    transparent 55%
-  );
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-
-.gaming-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
-  border-color: rgba(129, 140, 248, 0.7);
-}
-
-.gaming-card:hover::before {
-  opacity: 1;
-}
-
-/* Game tab "selection" feel */
-.game-tab {
-  position: relative;
-  overflow: hidden;
-}
-
-.game-tab::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  border: 1px solid transparent;
-  pointer-events: none;
-  transition: border-color 0.18s ease, opacity 0.18s ease;
-  opacity: 0;
-}
-
-.game-tab-active::after {
-  border-color: rgba(15, 23, 42, 0.6);
-  opacity: 1;
-}
-
-/* Resume button mini tweak so it feels like a secondary action */
-.resume-btn {
-  border-style: dashed;
-  border-color: rgba(148, 163, 184, 0.7);
+.nav-link {
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text-muted);
   font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 0 0 1px rgba(209, 213, 219, 0.9);
 }
 
+.nav-link:hover {
+  background: rgba(221, 239, 253, 0.9);
+  color: var(--accent-soft);
+  transform: translateY(-1px);
+}
 
+/* Theme toggle button */
 .theme-toggle {
   border: none;
   border-radius: 999px;
@@ -223,36 +302,21 @@ main {
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.4);
+  box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.7);
   transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 .theme-toggle:hover {
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 0 15px rgba(129, 140, 248, 0.6);
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 0 18px rgba(129, 140, 248, 0.6);
   filter: brightness(1.05);
-}
-
-.nav-link {
-  border: none;
-  border-radius: var(--radius-pill);
-  padding: 6px 14px;
-  background: rgba(15, 23, 42, 0.8);
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.nav-link:hover {
-  background: rgba(129, 140, 248, 0.2);
-  color: var(--accent-soft);
 }
 
 /* ---------- Hero ---------- */
 
 .hero {
   margin-bottom: 56px;
+  animation: fadeInUp 0.45s ease forwards;
 }
 
 .hero-content {
@@ -290,7 +354,7 @@ main {
   border-radius: var(--radius-pill);
   padding: 4px 12px;
   font-size: 0.75rem;
-  background: rgba(129, 140, 248, 0.18);
+  background: rgba(196, 181, 253, 0.25);
   color: var(--accent-soft);
 }
 
@@ -311,18 +375,42 @@ main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    var(--accent2),
+    var(--accent3)
+  );
   color: #020617;
   font-weight: 600;
+  box-shadow: 0 10px 25px rgba(129, 140, 248, 0.4);
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
 }
 
 .ghost-btn {
-  background: transparent;
-  border-color: rgba(148, 163, 184, 0.5);
+  background: #ffffff;
+  border-color: rgba(148, 163, 184, 0.6);
   color: var(--text-muted);
+}
+
+.ghost-btn:hover {
+  border-color: rgba(129, 140, 248, 0.9);
+  box-shadow: 0 6px 18px rgba(148, 163, 184, 0.4);
+}
+
+.resume-btn {
+  border-style: dashed;
+  border-color: rgba(148, 163, 184, 0.8);
+  font-size: 0.8rem;
 }
 
 .hero-meta {
@@ -360,8 +448,8 @@ main {
   border: 1px dashed rgba(244, 114, 182, 0.5);
   background: linear-gradient(
     135deg,
-    rgba(244, 114, 182, 0.12),
-    rgba(15, 23, 42, 0.9)
+    rgba(254, 242, 242, 0.95),
+    rgba(239, 246, 255, 0.96)
   );
 }
 
@@ -436,8 +524,8 @@ main {
   font-size: 0.72rem;
   padding: 4px 10px;
   border-radius: var(--radius-pill);
-  border: 1px solid rgba(148, 163, 184, 0.6);
-  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 /* ---------- Skills ---------- */
@@ -446,8 +534,8 @@ main {
   display: inline-flex;
   padding: 4px;
   border-radius: var(--radius-pill);
-  background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(209, 213, 219, 0.9);
   margin-bottom: 16px;
 }
 
@@ -499,13 +587,23 @@ main {
   width: 100%;
   height: 5px;
   border-radius: 999px;
-  background: rgba(30, 64, 175, 0.5);
+  background: rgba(219, 234, 254, 0.9);
   overflow: hidden;
 }
 
 .skill-meter-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--accent2), var(--accent3));
+  animation: barGlow 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes barGlow {
+  from {
+    transform: translateX(-5%);
+  }
+  to {
+    transform: translateX(5%);
+  }
 }
 
 .skill-items {
@@ -575,7 +673,7 @@ main {
   border-radius: var(--radius-md);
   border: none;
   padding: 8px 10px;
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   color: var(--text-muted);
   font-size: 0.85rem;
   text-align: left;
@@ -583,27 +681,76 @@ main {
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: background 0.2s ease, transform 0.1s ease;
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.15s ease;
+  box-shadow: 0 0 0 1px rgba(209, 213, 219, 0.9);
+  position: relative;
+  overflow: hidden;
 }
 
 .game-tab:hover {
-  background: rgba(129, 140, 248, 0.18);
+  background: rgba(219, 234, 254, 0.95);
   transform: translateX(2px);
+  box-shadow: 0 8px 20px rgba(148, 163, 184, 0.4);
+}
+
+.game-tab::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  pointer-events: none;
+  transition: border-color 0.18s ease, opacity 0.18s ease;
+  opacity: 0;
 }
 
 .game-tab-active {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #020617;
-  font-weight: 600;
+  background: linear-gradient(
+    135deg,
+    rgba(224, 231, 255, 0.98),
+    rgba(254, 242, 242, 0.98)
+  );
+  box-shadow: 0 10px 26px rgba(148, 163, 184, 0.45);
+}
+
+.game-tab-active::after {
+  border-color: rgba(129, 140, 248, 0.9);
+  opacity: 1;
 }
 
 .game-bullet {
   font-size: 0.7rem;
 }
 
+/* Gaming main card with HUD feel */
 .gaming-card {
   position: relative;
   overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.gaming-card::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(
+    circle at top left,
+    rgba(129, 140, 248, 0.18),
+    transparent 55%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.gaming-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(148, 163, 184, 0.6);
+  border-color: rgba(129, 140, 248, 0.8);
+}
+
+.gaming-card:hover::before {
+  opacity: 1;
 }
 
 .gaming-title {
@@ -623,8 +770,8 @@ main {
   margin-top: 12px;
   border-radius: var(--radius-md);
   padding: 10px 12px;
-  background: radial-gradient(circle at top left, #1d2433, #020617);
-  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: radial-gradient(circle at top left, #e5ecff, #fef3f5);
+  border: 1px dashed rgba(148, 163, 184, 0.7);
 }
 
 .hud-bar {
@@ -640,7 +787,7 @@ main {
   flex: 1;
   height: 4px;
   border-radius: 999px;
-  background: rgba(31, 41, 55, 0.9);
+  background: rgba(226, 232, 240, 0.9);
   overflow: hidden;
 }
 
@@ -664,6 +811,59 @@ main {
   margin-top: 8px;
   font-size: 0.78rem;
   color: var(--text-muted);
+}
+
+/* ---------- Gaming art tiles (cute gamer art) ---------- */
+
+.gaming-art-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.gaming-art-card {
+  position: relative;
+  border-radius: 16px;
+  padding: 10px 8px;
+  font-size: 0.75rem;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    rgba(224, 231, 255, 0.95),
+    rgba(255, 247, 237, 0.95)
+  );
+  box-shadow: 0 8px 20px rgba(148, 163, 184, 0.4);
+  border: 1px solid rgba(191, 219, 254, 0.9);
+  overflow: hidden;
+}
+
+.gaming-art-icon {
+  font-size: 1.3rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.gaming-art-label {
+  color: var(--text-muted);
+}
+
+.gaming-art-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+      circle at 10% 0,
+      rgba(129, 140, 248, 0.25),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 80% 100%,
+      rgba(244, 114, 182, 0.2),
+      transparent 55%
+    );
+  opacity: 0.6;
+  mix-blend-mode: screen;
 }
 
 /* ---------- Contact ---------- */
@@ -753,20 +953,192 @@ main {
   .hero-title {
     font-size: 2.1rem;
   }
+
+  .gaming-art-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* ---------- Dark mode component overrides ---------- */
+
+/* Cards darker, text bright */
+[data-theme="dark"] .glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.98),
+    rgba(15, 23, 42, 0.94)
+  );
+  border-color: rgba(51, 65, 85, 0.9);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85);
 }
-/* Light theme overrides */
-:root[data-theme="light"] {
-  --bg: #f3f4f6;
-  --bg-alt: #e5e7eb;
-  --card-bg: rgba(255, 255, 255, 0.8);
-  --card-border: rgba(148, 163, 184, 0.6);
 
-  --accent: #818cf8;       /* soft indigo */
-  --accent-soft: #4b5563;
-  --accent2: #f472b6;      /* pink */
-  --accent3: #22c55e;      /* green */
-  --text: #111827;
-  --text-muted: #6b7280;
+[data-theme="dark"] .mini-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.96),
+    rgba(17, 24, 39, 0.96)
+  );
+  border-color: rgba(55, 65, 81, 0.9);
+}
 
-  --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.18);
+/* Navbar in dark mode */
+[data-theme="dark"] .navbar {
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.98),
+    rgba(17, 24, 39, 0.98)
+  );
+}
+
+/* Nav links for dark */
+[data-theme="dark"] .nav-link {
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--text-muted);
+  box-shadow: 0 0 0 1px rgba(55, 65, 81, 0.9);
+}
+
+[data-theme="dark"] .nav-link:hover {
+  background: rgba(30, 64, 175, 0.7);
+  color: #e5e7eb;
+}
+
+/* Theme toggle button in dark */
+[data-theme="dark"] .theme-toggle {
+  color: #020617;
+  box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.7);
+}
+
+/* Ghost buttons look dark but clickable */
+[data-theme="dark"] .ghost-btn,
+[data-theme="dark"] .resume-btn {
+  background: rgba(15, 23, 42, 0.95);
+  color: var(--text-muted);
+  border-color: rgba(75, 85, 99, 0.9);
+}
+
+[data-theme="dark"] .ghost-btn:hover,
+[data-theme="dark"] .resume-btn:hover {
+  color: #e5e7eb;
+  border-color: rgba(129, 140, 248, 0.95);
+}
+
+/* Chips and pills in dark */
+[data-theme="dark"] .chip {
+  background: rgba(30, 64, 175, 0.7);
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .pill-switch {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: rgba(55, 65, 81, 0.9);
+}
+
+[data-theme="dark"] .pill {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .pill-active {
+  color: #020617;
+}
+
+/* Game tabs in dark */
+[data-theme="dark"] .game-tab {
+  background: rgba(15, 23, 42, 0.95);
+  color: var(--text-muted);
+  box-shadow: 0 0 0 1px rgba(55, 65, 81, 0.9);
+}
+
+[data-theme="dark"] .game-tab:hover {
+  background: rgba(30, 64, 175, 0.8);
+}
+
+/* Active tab pops a bit more */
+[data-theme="dark"] .game-tab-active {
+  background: linear-gradient(
+    135deg,
+    rgba(30, 64, 175, 0.9),
+    rgba(76, 29, 149, 0.9)
+  );
+  color: #e5e7eb;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.9);
+}
+
+/* Gaming main card / HUD in dark */
+[data-theme="dark"] .mini-hud {
+  background: radial-gradient(circle at top left, #020617, #020617);
+  border-color: rgba(55, 65, 81, 0.9);
+}
+
+/* Gaming art tiles still colorful but on dark base */
+[data-theme="dark"] .gaming-art-card {
+  background: radial-gradient(circle at 0 0, #1e293b, #020617);
+  border-color: rgba(55, 65, 81, 0.9);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.9);
+}
+
+[data-theme="dark"] .gaming-art-label {
+  color: #e5e7eb;
+}
+
+/* Contact cards */
+[data-theme="dark"] .contact-list span:first-child {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .contact-list a {
+  color: var(--accent-soft);
+}
+
+/* Footer */
+[data-theme="dark"] .footer {
+  color: var(--text-muted);
+}
+
+/* Ensure headings are always high-contrast */
+.hero-title,
+.section-title,
+.timeline-role,
+.skill-header h3,
+.project-header h3,
+.contact-card h3,
+.gaming-title,
+.hero-card h3,
+.nav-name {
+  color: var(--text);
+}
+
+/* Slight extra glow for headings in dark mode */
+[data-theme="dark"] .section-title,
+[data-theme="dark"] .hero-title {
+  text-shadow: 0 0 12px rgba(129, 140, 248, 0.45);
+}
+}
+
+/* === CRITICAL VISIBILITY FIXES === */
+
+/* Default (light) mode: headings dark */
+.hero-title,
+.nav-name,
+.timeline-role,
+.timeline-period,
+.timeline-company {
+  color: #111827; /* very dark slate */
+}
+
+/* Dark mode: headings bright */
+[data-theme="dark"] .hero-title,
+[data-theme="dark"] .nav-name,
+[data-theme="dark"] .timeline-role,
+[data-theme="dark"] .timeline-period,
+[data-theme="dark"] .timeline-company {
+  color: #e5e7eb !important; /* near-white */
+}
+
+/* Optional: make company name slightly accented in dark mode */
+[data-theme="dark"] .timeline-company {
+  color: #c4b5fd !important; /* soft indigo */
+}
+
+/* Optional: period can be a bit muted but visible */
+[data-theme="dark"] .timeline-period {
+  color: #9ca3af !important; /* grey */
 }

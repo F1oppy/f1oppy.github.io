@@ -1,7 +1,13 @@
-// src/components/GamingShowcase.jsx
-import { useState } from "react";
+import React, { useState } from "react";
 
-const games = [
+interface GameInfo {
+  name: string;
+  role: string;
+  style: string;
+  takeaway: string;
+}
+
+const games: GameInfo[] = [
   {
     name: "Ghost of Tsushima",
     role: "Samurai / Explorer",
@@ -32,8 +38,8 @@ const games = [
   },
 ];
 
-const GamingShowcase = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+const GamingShowcase: React.FC = () => {
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
   const activeGame = games[activeIndex];
 
@@ -56,6 +62,26 @@ const GamingShowcase = () => {
               <span className="game-bullet">▶</span> {g.name}
             </button>
           ))}
+        </div>
+
+        {/* Cute gaming art tiles */}
+        <div className="gaming-art-grid">
+          <div className="gaming-art-card">
+            <span className="gaming-art-icon">🎮</span>
+            <span className="gaming-art-label">Story Games</span>
+          </div>
+          <div className="gaming-art-card">
+            <span className="gaming-art-icon">🗡️</span>
+            <span className="gaming-art-label">Stealth & Tactics</span>
+          </div>
+          <div className="gaming-art-card">
+            <span className="gaming-art-icon">🧭</span>
+            <span className="gaming-art-label">Open Worlds</span>
+          </div>
+          <div className="gaming-art-card">
+            <span className="gaming-art-icon">🕹️</span>
+            <span className="gaming-art-label">Competitive</span>
+          </div>
         </div>
       </div>
 
@@ -92,7 +118,8 @@ const GamingShowcase = () => {
           </div>
         </div>
         <p className="gaming-footnote">
-          Think of this section as a minimalist game HUD — but for my personality.
+          A small HUD-inspired card that links my playstyle to how I work with
+          teams and incidents.
         </p>
       </div>
     </div>
