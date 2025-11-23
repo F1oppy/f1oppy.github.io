@@ -23,6 +23,7 @@ const Hero: React.FC<HeroProps> = ({ profile }) => {
             <a href="#contact" className="btn primary-btn">
               Let’s Connect
             </a>
+
             <a
               href={profile.linkedin}
               target="_blank"
@@ -30,6 +31,15 @@ const Hero: React.FC<HeroProps> = ({ profile }) => {
               className="btn ghost-btn"
             >
               View LinkedIn
+            </a>
+
+            {/* NEW: Download Resume button */}
+            <a
+              href="/resume.pdf"
+              className="btn ghost-btn resume-btn"
+              download
+            >
+              ⬇️ Download Resume
             </a>
           </div>
 
